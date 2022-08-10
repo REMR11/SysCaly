@@ -24,3 +24,9 @@ hs_err_pid*
 /SysCaly.EL/nbproject/private/
 /SysCaly.DAL/nbproject/private/
 /SysCaly.UIWeb/nbproject/private/
+/SysCaly.EL/build/
+/SysCaly.DAL/build/
+/SysCaly.EL/dist/
+/SysCaly.DAL/dist/
+/SysCaly.UIWeb/build/
+/SysCaly.UIWeb/dist/
