@@ -18,6 +18,7 @@ public class Marks {
     private int Cycle;
     private int Qualification;
     private ArrayList<Student>students;
+    
 
     public int getIdMarks() {
         return IdMarks;
