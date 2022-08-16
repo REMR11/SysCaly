@@ -5,6 +5,7 @@
 package syscaly.dal;
 
 import java.util.*;
+import java.util.HashMap;
 import java.sql.*;
 import syscaly.el.*; // Agregar la referencia al proyecto de entidades de negocio y poder utilizar las entidades de Rol y UserSys
 import java.time.LocalDate;
@@ -33,7 +34,7 @@ public class UserSysDal {
     }
 
     static String obtenerCampos() {
-        return "u.Id, u.IdRol, u.IdClassroom, u.IdStudent, u.NIE u.Name, u.LastName, u.Login, u.StatusUser, u.DateCreateUser";
+        return "u.Id, u.IdRol, u.IdClassroom, u.IdStudent, u.NIE, u.Name, u.LastName, u.Login, u.StatusUser, u.DateCreateUser";
     }
 
     private static String obtenerSelect(UserSys pUserSys) {
@@ -61,22 +62,22 @@ public class UserSysDal {
         boolean existe = false;
         ArrayList<UserSys> usuarios = new ArrayList();
         try ( Connection conn = DBContext.obtenerConexion();) { 
-            String sql = obtenerSelect(pUserSys);  // Obtener la consulta SELECT de la tabla UserSys
-            // Concatenar a la consulta SELECT de la tabla UserSys el WHERE y el filtro para saber si existe el login
+            String sql = obtenerSelect(pUserSys); 
+            
             sql += " WHERE u.Id<>? AND u.Login=?";
             try ( PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) { // Obtener el PreparedStatement desde la clase DBContext
-                ps.setInt(1, pUserSys.getId());  // Agregar el parametros a la consulta donde estan el simbolo ? #1 
-                ps.setString(2, pUserSys.getLogin());  // Agregar el parametros a la consulta donde estan el simbolo ? #2 
-                obtenerDatos(ps, usuarios); // Llenar el ArrayList de USuario con las fila que devolvera la consulta SELECT a la tabla de UserSys
-                ps.close(); // Cerrar el PreparedStatement
+                ps.setInt(1, pUserSys.getId());  
+                ps.setString(2, pUserSys.getLogin());  
+                obtenerDatos(ps, usuarios); 
+                ps.close();
             } catch (SQLException ex) {
-                throw ex;  // Enviar al siguiente metodo el error al ejecutar PreparedStatement el en el caso que suceda
+                throw ex;  
             }
-            conn.close(); // Cerrar la conexion a la base de datos
+            conn.close(); 
         } catch (SQLException ex) {
-            throw ex; // Enviar al siguiente metodo el error al obtener la conexion  de la clase DBContext en el caso que suceda
+            throw ex; 
         }
-        if (usuarios.size() > 0) { // Verificar si el ArrayList de UserSys trae mas de un registro en tal caso solo debe de traer uno
+        if (usuarios.size() > 0) { 
             UserSys usuario;
             // Se solucciono tenia valor de 1 cuando debe de ser cero
             usuario = usuarios.get(0); // Si el ArrayList de UserSys trae un registro o mas obtenemos solo el primero 
@@ -98,18 +99,19 @@ public class UserSysDal {
         if (existe == false) {
             try ( Connection conn = DBContext.obtenerConexion();) { // Obtener la conexion desde la clase DBContext y encerrarla en try para cierre automatico
                 //Definir la consulta INSERT a la tabla de UserSys utilizando el simbolo "?" para enviar parametros
-                sql = "INSERT INTO UserSys(IdRol, IdClassroom, IdStudent, Name,LastName,Login,Password, StatusUser,DateCreateUser) VALUES(?,?,?,?,?,?,?,?,?,?)";
+                sql = "INSERT INTO UserSys(IdRol, IdClassroom, IdStudent, NIE, Name,LastName,Login,Password, StatusUser,DateCreateUser) VALUES(?,?,?,?,?,?,?,?,?,?)";
                 try ( PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) { // Obtener el PreparedStatement desde la clase DBContext
                     ps.setInt(1, pUserSys.getIdRol()); // Agregar el parametro a la consulta donde estan el simbolo "?" #1  
                     // Agregar el parametro a la consulta donde estan el simbolo "?" #2 
                     ps.setInt(2, pUserSys.getIdClassroom());
                     ps.setInt(3, pUserSys.getIdStudent());
-                    ps.setString(4, pUserSys.getName());
-                    ps.setString(5, pUserSys.getLastName());
-                    ps.setString(6, pUserSys.getLogin());
-                    ps.setString(7, encriptarMD5(pUserSys.getPassword()));
-                    ps.setByte(8, pUserSys.getStatusUser());
-                    ps.setDate(9, java.sql.Date.valueOf(LocalDate.now()));
+                    ps.setInt(4, pUserSys.getNIE());
+                    ps.setString(5, pUserSys.getName());
+                    ps.setString(6, pUserSys.getLastName());
+                    ps.setString(7, pUserSys.getLogin());
+                    ps.setString(8, encriptarMD5(pUserSys.getPassword()));
+                    ps.setByte(9, pUserSys.getStatusUser());
+                    ps.setDate(10, java.sql.Date.valueOf(LocalDate.now()));
                     result = ps.executeUpdate(); // ejecutar la consulta INSERT en la base de datos
                     ps.close(); // cerrar el PreparedStatement
                 } catch (SQLException ex) {
@@ -145,7 +147,7 @@ public class UserSysDal {
                     ps.setString(6, pUserSys.getLastName());
                     ps.setString(7, pUserSys.getLogin());
                     ps.setByte(8, pUserSys.getStatusUser()); // agregar el parametro a la consulta donde estan el simbolo ? #5  
-                    ps.setInt(6, pUserSys.getId()); // agregar el parametro a la consulta donde estan el simbolo ? #6  
+                    ps.setInt(9, pUserSys.getId()); // agregar el parametro a la consulta donde estan el simbolo ? #6  
                     result = ps.executeUpdate(); // ejecutar la consulta UPDATE en la base de datos
                     ps.close(); // cerrar el PreparedStatement
                 } catch (SQLException ex) {
