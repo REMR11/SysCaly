@@ -4,10 +4,15 @@
  */
 package syscaly.dal;
 
+import java.util.*;
+import java.sql.*;
+import syscaly.el.*;
 /**
  *
  * @author ronal
  */
 public class StudentDAL {
-    
+    static String ObtenerCampos(){
+    return "s.IdStudent";
+    }
 }

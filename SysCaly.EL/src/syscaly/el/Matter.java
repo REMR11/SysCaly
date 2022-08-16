@@ -16,7 +16,7 @@ public class Matter {
     private int IdMarks;
     private String NameMatter;
     private String NameTeacher;
-    private ArrayList<Marks> markss;
+    private ArrayList<Qualification> markss;
 
     public Matter() {
     }
@@ -60,11 +60,11 @@ public class Matter {
         this.NameTeacher = NameTeacher;
     }
 
-    public ArrayList<Marks> getMarkss() {
+    public ArrayList<Qualification> getMarkss() {
         return markss;
     }
 
-    public void setMarkss(ArrayList<Marks> markss) {
+    public void setMarkss(ArrayList<Qualification> markss) {
         this.markss = markss;
     }
     

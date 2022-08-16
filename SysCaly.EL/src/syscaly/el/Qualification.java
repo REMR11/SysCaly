@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  * @author ronal
  */
-public class Marks {
+public class Qualification {
     
     private int IdMarks;
     private int IdStudent;
@@ -68,10 +68,10 @@ public class Marks {
         this.students = students;
     }
 
-    public Marks() {
+    public Qualification() {
     }
 
-    public Marks(int IdMarks, int IdStudent, int Period, int Cycle, int Qualification) {
+    public Qualification(int IdMarks, int IdStudent, int Period, int Cycle, int Qualification) {
         this.IdMarks = IdMarks;
         this.IdStudent = IdStudent;
         this.Period = Period;

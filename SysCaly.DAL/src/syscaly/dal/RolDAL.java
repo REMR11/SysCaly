@@ -15,7 +15,7 @@ import syscaly.el.*;
 public class RolDAL {
     
     static String obtenerCampos() {
-        return "r.Id,r.Nombre";
+        return "r.Id, r.NameRol, r.DescriptionRol";
     }
 
     private static String obtenerSelect(Rol pRol) {
@@ -42,7 +42,7 @@ public class RolDAL {
         int result;
         String sql;
         try (Connection conn = DBContext.obtenerConexion();) { 
-            sql = "INSERT INTO Rol(Nombre) VALUES(?)"; 
+            sql = "INSERT INTO Rol(NameRol, DescriptionRol, stateRol) VALUES(?)"; 
             try (PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) { 
                 ps.setString(1, pRol.getNombre()); 
                 result = ps.executeUpdate();
