@@ -25,9 +25,9 @@ public class DBContext {
     static int TIPODB = TipoDB.MYSQL;
     
     static String driver = "com.mysql.cj.jdbc.Driver";
-    static String url = "jdbc:mysql//localhost:3308/dbsyscaly";
-    static String usuario = "Admin";
-    static String password = "Admin123";
+    static String url = "jdbc:mysql//DBSysCaly.mssql.somee.com/";
+    static String usuario = "UserSysCaly_SQLLogin_1";
+    static String password = "ic8gl8aft2";
 
     Connection conn = null;
 
