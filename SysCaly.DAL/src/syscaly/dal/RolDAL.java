@@ -15,7 +15,7 @@ import syscaly.el.*;
 public class RolDAL {
     
     static String obtenerCampos() {
-        return "r.Id, r.NameRol, r.DescriptionRol";
+        return "r.Id, r.NameRol, r.DescriptionRol, r.StateRol";
     }
 
     private static String obtenerSelect(Rol pRol) {
@@ -107,6 +107,8 @@ public class RolDAL {
         pRol.setId(pResultSet.getInt(pIndex)); // index 1
         pIndex++;
         pRol.setNombre(pResultSet.getString(pIndex)); // index 2
+        pIndex++;
+        pRol.setDescriptionRol(pResultSet.getString(pIndex));
         return pIndex;
     }
     
