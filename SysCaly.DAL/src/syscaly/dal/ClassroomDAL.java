@@ -141,5 +141,9 @@ public class ClassroomDAL {
         return result;
     }
     
-    static int AsignarDatosResultSet
+    static int AsignarDatosResultSet;
+
+    private static void ObtenerDatos(PreparedStatement ps, ArrayList<Classroom> Classrooms) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
