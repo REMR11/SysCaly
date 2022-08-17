@@ -13,17 +13,17 @@ import java.util.ArrayList;
 public class Matter {
 
     private int IdMatter;
-    private int IdMarks;
+    private int IdQualification;
     private String NameMatter;
     private String NameTeacher;
-    private ArrayList<Qualification> markss;
+    private ArrayList<Qualification> Qualifications;
 
     public Matter() {
     }
 
-    public Matter(int IdMatter, int IdMarks, String NameMatter, String NameTeacher) {
+    public Matter(int IdMatter, int IdQualification, String NameMatter, String NameTeacher) {
         this.IdMatter = IdMatter;
-        this.IdMarks = IdMarks;
+        this.IdQualification = IdQualification;
         this.NameMatter = NameMatter;
         this.NameTeacher = NameTeacher;
     }
@@ -36,12 +36,12 @@ public class Matter {
         this.IdMatter = IdMatter;
     }
 
-    public int getIdMarks() {
-        return IdMarks;
+    public int getIdQualification() {
+        return IdQualification;
     }
 
-    public void setIdMarks(int IdMarks) {
-        this.IdMarks = IdMarks;
+    public void setIdQualification(int IdQualification) {
+        this.IdQualification = IdQualification;
     }
 
     public String getNameMatter() {
@@ -60,12 +60,12 @@ public class Matter {
         this.NameTeacher = NameTeacher;
     }
 
-    public ArrayList<Qualification> getMarkss() {
-        return markss;
+    public ArrayList<Qualification> getQualifications() {
+        return Qualifications;
     }
 
-    public void setMarkss(ArrayList<Qualification> markss) {
-        this.markss = markss;
+    public void setQualifications(ArrayList<Qualification> Qualifications) {
+        this.Qualifications = Qualifications;
     }
     
     

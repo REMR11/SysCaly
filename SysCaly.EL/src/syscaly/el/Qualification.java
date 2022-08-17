@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class Qualification {
     
-    private int IdMarks;
+    private int IdQualification;
     private int IdStudent;
     private int Period;
     private int Cycle;
@@ -20,12 +20,12 @@ public class Qualification {
     private ArrayList<Student>students;
     
 
-    public int getIdMarks() {
-        return IdMarks;
+    public int getIdQualification() {
+        return IdQualification;
     }
 
-    public void setIdMarks(int IdMarks) {
-        this.IdMarks = IdMarks;
+    public void setIdQualification(int IdMarks) {
+        this.IdQualification = IdMarks;
     }
 
     public int getIdStudent() {
@@ -71,8 +71,8 @@ public class Qualification {
     public Qualification() {
     }
 
-    public Qualification(int IdMarks, int IdStudent, int Period, int Cycle, int Qualification) {
-        this.IdMarks = IdMarks;
+    public Qualification(int IdQualification, int IdStudent, int Period, int Cycle, int Qualification) {
+        this.IdQualification = IdQualification;
         this.IdStudent = IdStudent;
         this.Period = Period;
         this.Cycle = Cycle;

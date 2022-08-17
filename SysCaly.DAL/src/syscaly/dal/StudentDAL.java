@@ -179,7 +179,7 @@ public class StudentDAL {
         try ( Connection conn = DBContext.obtenerConexion();) {
             String sql = ObtenerSelect(pStudent);
             DBContext dBContext = new DBContext();
-            DBContext.UtilQuery utilQuery = DBContext.new UtilQuery(sql, null, 0);
+            DBContext.UtilQuery utilQuery = dBContext.new UtilQuery(sql, null, 0);
             QuerySelect(pStudent, utilQuery);
             sql = AgregarOrderBy(pStudent);
             sql += AgregarOrderBy(pStudent);
