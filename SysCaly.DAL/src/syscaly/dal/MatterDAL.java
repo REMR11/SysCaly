@@ -7,7 +7,8 @@ package syscaly.dal;
 import java.util.*;
 import java.sql.*;
 import syscaly.el.*;
-
+import java.util.HashMap;
+import java.sql.ResultSet;
 /**
  *
  * @author ronal
@@ -154,7 +155,8 @@ public class MatterDAL {
         try ( ResultSet resultSet = DBContext.obtenerResultSet(pPS);) { // obtener el ResultSet desde la clase DBContext
             while (resultSet.next()) { // Recorrer cada una de la fila que regresa la consulta  SELECT de la tabla Matter
                 Matter matter = new Matter();
-                // Llenar las propiedaddes de la Entidad Matter con los datos obtenidos de la fila en el ResultSet
+                AsignarDatosResultSet(matter, resultSet, 0)
+// Llenar las propiedaddes de la Entidad Matter con los datos obtenidos de la fila en el ResultSet
                 asignarDatosResultSet(matter, resultSet, 0);
                 pMatters.add(matter); // agregar la entidad Matter al ArrayList de Matter
             }
@@ -162,6 +164,7 @@ public class MatterDAL {
         } catch (SQLException ex) {
             throw ex;// enviar al siguiente metodo el error al obtener ResultSet de la clase DBContext   en el caso que suceda 
         }
+        
     }
     // Metodo para  ejecutar el ResultSet de la consulta SELECT a la tabla de Matter y JOIN a la tabla de Rol
 
@@ -175,7 +178,7 @@ public class MatterDAL {
                 if (QualificationMap.containsKey(matter.getIdQualification()) == false) { // verificar que el HashMap aun no contenga el Rol actual
                     ArrayList<Qualification> qualifications = new ArrayList<>();
                     // en el caso que el Rol no este en el HashMap se asignara
-                    QualificationDAL.AsignarDatosResultSet(matter.getIdMatter(), resultSet, index);
+                    QualificationDAL.AsignarDatosResultSet(matter, resultSet, 0);
                     QualificationMap.put(matter.getIdMatter(), qualifications); // agregar el Rol al  HashMap
                     matter.setQualifications(qualifications); // agregar el Rol al Matter
                 } else {
