@@ -13,17 +13,14 @@ import java.util.ArrayList;
 public class Matter {
 
     private int IdMatter;
-    private int IdQualification;
     private String NameMatter;
     private String NameTeacher;
-    private ArrayList<Qualification> Qualifications;
-
+    
     public Matter() {
     }
 
-    public Matter(int IdMatter, int IdQualification, String NameMatter, String NameTeacher) {
+    public Matter(int IdMatter, String NameMatter, String NameTeacher) {
         this.IdMatter = IdMatter;
-        this.IdQualification = IdQualification;
         this.NameMatter = NameMatter;
         this.NameTeacher = NameTeacher;
     }
@@ -36,13 +33,6 @@ public class Matter {
         this.IdMatter = IdMatter;
     }
 
-    public int getIdQualification() {
-        return IdQualification;
-    }
-
-    public void setIdQualification(int IdQualification) {
-        this.IdQualification = IdQualification;
-    }
 
     public String getNameMatter() {
         return NameMatter;
@@ -60,13 +50,6 @@ public class Matter {
         this.NameTeacher = NameTeacher;
     }
 
-    public ArrayList<Qualification> getQualifications() {
-        return Qualifications;
-    }
-
-    public void setQualifications(ArrayList<Qualification> Qualifications) {
-        this.Qualifications = Qualifications;
-    }
     
     
     

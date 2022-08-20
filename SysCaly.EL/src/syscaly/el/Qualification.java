@@ -11,21 +11,30 @@ import java.util.ArrayList;
  * @author ronal
  */
 public class Qualification {
-    
+
     private int IdQualification;
+    private int IdMatter;
     private int IdStudent;
     private int Period;
     private int Cycle;
     private int Qualification;
-    private ArrayList<Student>students;
-    
+    private ArrayList<Student> students;
+    private ArrayList<Matter> Matters;
 
-    public int getIdQualification() {
-        return IdQualification;
+    public ArrayList<Matter> getMatters() {
+        return Matters;
     }
 
     public void setIdQualification(int IdMarks) {
         this.IdQualification = IdMarks;
+    }
+
+    public int getIdMatter() {
+        return IdMatter;
+    }
+
+    public void setIdMatter(int IdMatter) {
+        this.IdMatter = IdMatter;
     }
 
     public int getIdStudent() {
@@ -68,6 +77,14 @@ public class Qualification {
         this.students = students;
     }
 
+    public void setMatters(ArrayList<Matter> Matters) {
+        this.Matters = Matters;
+    }
+
+    public int getIdQualification() {
+        return IdQualification;
+    }
+
     public Qualification() {
     }
 
@@ -78,5 +95,5 @@ public class Qualification {
         this.Cycle = Cycle;
         this.Qualification = Qualification;
     }
-    
+
 }
