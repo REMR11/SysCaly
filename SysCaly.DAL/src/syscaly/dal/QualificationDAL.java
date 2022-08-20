@@ -38,7 +38,7 @@ public class QualificationDAL {
             try ( PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) {
                 ps.setInt(1, pQualification.getIdMatter());
                 ps.setInt(2, pQualification.getIdStudent());
-                ps.setInt(2, pQualification.getPeriod());
+                ps.setInt(3, pQualification.getPeriod());
                 ps.setInt(4, pQualification.getCycle());
                 ps.setInt(5, pQualification.getQualification());
                 ps.setInt(6, pQualification.getIdQualification());
