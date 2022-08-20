@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Classroom {
     private int IdClassroom;
     private int IdStudent;
-    private int IdMatter;
+    private int IdQualification;
     private int NumberOfStudent;
     private String Section;
     private ArrayList<Student> students;
@@ -22,10 +22,10 @@ public class Classroom {
     public Classroom() {
     }
 
-    public Classroom(int IdClassroom, int IdStudent, int IdMatter, int NumberOfStudent, String Section) {
+    public Classroom(int IdClassroom, int IdStudent, int IdQualification, int NumberOfStudent, String Section) {
         this.IdClassroom = IdClassroom;
         this.IdStudent = IdStudent;
-        this.IdMatter = IdMatter;
+        this.IdQualification = IdQualification;
         this.NumberOfStudent = NumberOfStudent;
         this.Section = Section;
     }
@@ -46,12 +46,12 @@ public class Classroom {
         this.IdStudent = IdStudent;
     }
 
-    public int getIdMatter() {
-        return IdMatter;
+    public int getIdQualification() {
+        return IdQualification;
     }
 
-    public void setIdMatter(int IdMatter) {
-        this.IdMatter = IdMatter;
+    public void setIdQualification(int IdQualification) {
+        this.IdQualification = IdQualification;
     }
 
     public int getNumberOfStudent() {
