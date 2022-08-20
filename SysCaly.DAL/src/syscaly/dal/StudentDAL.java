@@ -4,7 +4,6 @@
  */
 package syscaly.dal;
 
-import com.mysql.cj.xdevapi.DbDoc;
 import java.util.*;
 import java.sql.*;
 import syscaly.el.*;
@@ -20,10 +19,7 @@ public class StudentDAL {
     }
 
     private static String ObtenerSelect(Student pStudent) {
-        String sql;
-        sql = "SELECT ";
-        sql += ObtenerCampos();
-        return sql;
+        return "SELECT " + ObtenerCampos()+ " From Student s";
     }
 
     private static String AgregarOrderBy(Student pStudent) {
@@ -39,7 +35,7 @@ public class StudentDAL {
             sql = "INSERT INTO Student(NIE, NameStudent, LastName, Turn)VALUES(?,?,?,?)";
             try ( PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) {
                 ps.setInt(1, pStudent.getNIE());
-                ps.setString(2, pStudent.getName());
+                ps.setString(2, pStudent.getNameStudent());
                 ps.setString(3, pStudent.getLastName());
                 ps.setString(4, pStudent.getTurn());
                 result = ps.executeUpdate();
@@ -61,7 +57,7 @@ public class StudentDAL {
             sql = "UPDATE Student SET NIE=?, NameStudent=?, LastName=?, Turn=? WHERE IdStudent=?";
             try ( PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) {
                 ps.setInt(1, pStudent.getNIE());
-                ps.setString(2, pStudent.getName());
+                ps.setString(2, pStudent.getNameStudent());
                 ps.setString(3, pStudent.getLastName());
                 ps.setString(4, pStudent.getTurn());
                 result = ps.executeUpdate();
@@ -101,7 +97,7 @@ public class StudentDAL {
         pIndex++;
         pStudent.setNIE(pResultSet.getInt(pIndex));
         pIndex++;
-        pStudent.setName(pResultSet.getString(pIndex));
+        pStudent.setNameStudent(pResultSet.getString(pIndex));
         pIndex++;
         pStudent.setLastName(pResultSet.getString(pIndex));
         pIndex++;

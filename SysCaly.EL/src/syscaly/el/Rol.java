@@ -12,8 +12,8 @@ import java.util.ArrayList;
  */
 public class Rol {
 
-    private int Id;
-    private String Nombre;
+    private int IdRol;
+    private String NameRol;
     private String DescriptionRol;
     private int Top_aux;
     private ArrayList<UserSys> Usuario;
@@ -21,26 +21,26 @@ public class Rol {
     public Rol() {
     }
 
-    public Rol(int Id, String nombre, String DescriptionRol) {
-        this.Id = Id;
-        this.Nombre = nombre;
+    public Rol(int IdRol, String NameRol, String DescriptionRol) {
+        this.IdRol = IdRol;
+        this.NameRol = NameRol;
         this.DescriptionRol = DescriptionRol;
     }
 
-    public int getId() {
-        return Id;
+    public int getIdRol() {
+        return IdRol;
     }
 
-    public void setId(int Id) {
-        this.Id = Id;
+    public void setIdRol(int Id) {
+        this.IdRol = Id;
     }
 
-    public String getNombre() {
-        return Nombre;
+    public String getNameRol() {
+        return NameRol;
     }
 
-    public void setNombre(String Nombre) {
-        this.Nombre = Nombre;
+    public void setNameRol(String NameRol) {
+        this.NameRol = NameRol;
     }
 
     public String getDescriptionRol() {

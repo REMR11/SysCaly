@@ -15,7 +15,7 @@ import syscaly.el.*;
 public class RolDAL {
     
     static String obtenerCampos() {
-        return "r.Id, r.NameRol, r.DescriptionRol, r.StateRol";
+        return "r.IdRol, r.NameRol, r.DescriptionRol";
     }
 
     private static String obtenerSelect(Rol pRol) {
@@ -42,9 +42,10 @@ public class RolDAL {
         int result;
         String sql;
         try (Connection conn = DBContext.obtenerConexion();) { 
-            sql = "INSERT INTO Rol(NameRol, DescriptionRol, stateRol) VALUES(?)"; 
+            sql = "INSERT INTO Rol(NameRol, DescriptionRol) VALUES(?,?)"; 
             try (PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) { 
-                ps.setString(1, pRol.getNombre()); 
+                ps.setString(1, pRol.getNameRol()); 
+                ps.setString(2, pRol.getDescriptionRol());
                 result = ps.executeUpdate();
                 ps.close();
             } catch (SQLException ex) {
@@ -65,10 +66,11 @@ public class RolDAL {
         int result;
         String sql;
         try (Connection conn = DBContext.obtenerConexion();) { 
-            sql = "UPDATE Rol SET Nombre=? WHERE Id=?"; 
+            sql = "UPDATE Rol SET NameRol=? DescriptionRol=? WHERE IdRol=?"; 
             try (PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) { 
-                ps.setString(1, pRol.getNombre());
-                ps.setInt(2, pRol.getId());  
+                ps.setString(1, pRol.getNameRol());
+                ps.setString(2,pRol.getDescriptionRol());
+                ps.setInt(3, pRol.getIdRol());  
                 result = ps.executeUpdate(); 
                 ps.close();
             } catch (SQLException ex) {
@@ -86,9 +88,9 @@ public class RolDAL {
         int result;
         String sql;
         try (Connection conn = DBContext.obtenerConexion();) {
-            sql = "DELETE FROM Rol WHERE Id=?"; 
+            sql = "DELETE FROM Rol WHERE IdRol=?"; 
             try (PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) {
-                ps.setInt(1, pRol.getId());
+                ps.setInt(1, pRol.getIdRol());
                 result = ps.executeUpdate();
                 ps.close();
             } catch (SQLException ex) {
@@ -104,9 +106,9 @@ public class RolDAL {
 
     static int asignarDatosResultSet(Rol pRol, ResultSet pResultSet, int pIndex) throws Exception {
         pIndex++;
-        pRol.setId(pResultSet.getInt(pIndex)); // index 1
+        pRol.setIdRol(pResultSet.getInt(pIndex)); // index 1
         pIndex++;
-        pRol.setNombre(pResultSet.getString(pIndex)); // index 2
+        pRol.setNameRol(pResultSet.getString(pIndex)); // index 2
         pIndex++;
         pRol.setDescriptionRol(pResultSet.getString(pIndex));
         return pIndex;
@@ -130,9 +132,9 @@ public class RolDAL {
         ArrayList<Rol> roles = new ArrayList();
         try (Connection conn = DBContext.obtenerConexion();) { 
             String sql = obtenerSelect(pRol); 
-            sql += " WHERE r.Id=?"; 
+            sql += " WHERE r.IdRol=?"; 
             try (PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) { 
-                ps.setInt(1, pRol.getId());  
+                ps.setInt(1, pRol.getIdRol());  
                 obtenerDatos(ps, roles); 
                 ps.close(); 
             } catch (SQLException ex) {
@@ -172,16 +174,16 @@ public class RolDAL {
     
     static void querySelect(Rol pRol, DBContext.UtilQuery pUtilQuery) throws SQLException {
         PreparedStatement statement = pUtilQuery.getStatement(); 
-        if (pRol.getId() > 0) { 
-            pUtilQuery.AgregarWhereAnd(" r.Id=? "); 
+        if (pRol.getIdRol() > 0) { 
+            pUtilQuery.AgregarWhereAnd(" r.IdRol=? "); 
             if (statement != null) { 
-                statement.setInt(pUtilQuery.getNumWhere(), pRol.getId()); 
+                statement.setInt(pUtilQuery.getNumWhere(), pRol.getIdRol()); 
             }
         }
-        if (pRol.getNombre() != null && pRol.getNombre().trim().isEmpty() == false) {
-            pUtilQuery.AgregarWhereAnd(" r.Nombre LIKE ? "); 
+        if (pRol.getNameRol() != null && pRol.getNameRol().trim().isEmpty() == false) {
+            pUtilQuery.AgregarWhereAnd(" r.NameRol LIKE ? "); 
             if (statement != null) {
-                statement.setString(pUtilQuery.getNumWhere(), "%" + pRol.getNombre() + "%"); 
+                statement.setString(pUtilQuery.getNumWhere(), "%" + pRol.getNameRol() + "%"); 
             }
         }
     }

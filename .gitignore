@@ -29,3 +29,5 @@ hs_err_pid*
 /SysCaly.EL/dist/
 /SysCaly.DAL/dist/
 
+/Pruebas/nbproject/private/
+/Pruebas/build/

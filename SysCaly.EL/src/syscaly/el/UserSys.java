@@ -13,12 +13,12 @@ import java.util.ArrayList;
  */
 public class UserSys {
     
-    private int Id;
+    private int IdUser;
     private int IdRol;
     private int IdClassroom;
     private int IdStudent;
     private int NIE;
-    private String Name;
+    private String NameUser;
     private String LastName;
     private String Login;
     private String Password;
@@ -33,13 +33,13 @@ public class UserSys {
     public UserSys() {
     }
 
-    public UserSys(int Id, int IdRol, int IdClassroom, int IdStudent, int NIE, String Name, String LastName, String Login, String Password, byte StatusUser, LocalDate DateCreateUser) {
-        this.Id = Id;
+    public UserSys(int IdUser, int IdRol, int IdClassroom, int IdStudent, int NIE, String NameUser, String LastName, String Login, String Password, byte StatusUser, LocalDate DateCreateUser) {
+        this.IdUser = IdUser;
         this.IdRol = IdRol;
         this.IdClassroom = IdClassroom;
         this.IdStudent = IdStudent;
         this.NIE = NIE;
-        this.Name = Name;
+        this.NameUser = NameUser;
         this.LastName = LastName;
         this.Login = Login;
         this.Password = Password;
@@ -47,12 +47,12 @@ public class UserSys {
         this.DateCreateUser = DateCreateUser;
     }
 
-    public int getId() {
-        return Id;
+    public int getIdUser() {
+        return IdUser;
     }
 
-    public void setId(int Id) {
-        this.Id = Id;
+    public void setIdUser(int Id) {
+        this.IdUser = Id;
     }
 
     public int getIdRol() {
@@ -87,12 +87,12 @@ public class UserSys {
         this.NIE = NIE;
     }
 
-    public String getName() {
-        return Name;
+    public String getNameUser() {
+        return NameUser;
     }
 
-    public void setName(String Name) {
-        this.Name = Name;
+    public void setNameUser(String NameUser) {
+        this.NameUser = NameUser;
     }
 
     public String getLastName() {

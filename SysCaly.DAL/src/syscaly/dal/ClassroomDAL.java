@@ -20,10 +20,7 @@ public class ClassroomDAL {
     }
 
     private static String ObtenerSelect(Classroom pClassroom) {
-        String sql;
-        sql = "SELECT " + ObtenerCampos() + "FROM Classroom c ";
-
-        return sql;
+         return "SELECT " + ObtenerCampos() + "FROM Classroom c ";
     }
 
     private static String AgregarOrderBy(Classroom pClassroom) {
@@ -34,7 +31,7 @@ public class ClassroomDAL {
 
     private static boolean ExistsClassroom(Classroom pClassroom) throws SQLException {
         boolean existsC = false;
-        ArrayList<Classroom> Classrooms = new ArrayList<Classroom>();
+        ArrayList<Classroom> Classrooms = new ArrayList<>();
         try ( Connection conn = DBContext.obtenerConexion();) {
 
             String sql = ObtenerSelect(pClassroom);
@@ -69,7 +66,7 @@ public class ClassroomDAL {
         if (existsC == false) {
             try ( Connection conn = DBContext.obtenerConexion();) {
 
-                sql = "INSERT INTO Classroom(IdStudent, IdMatter, NumberOfstudent, Section) VALUES(?,?,?,?)";
+                sql = "INSERT INTO Classroom(IdStudent, IdMatter, NumberOfStudent, Section) VALUES(?,?,?,?)";
                 try ( PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) {
                     ps.setInt(1, pClassroom.getIdStudent());
                     ps.setInt(2, pClassroom.getIdMatter());
@@ -99,12 +96,13 @@ public class ClassroomDAL {
 
         if (existsC == false) {
             try ( Connection conn = DBContext.obtenerConexion();) {
-                sql = "UPDATE  Classroom SET IdStudent, IdMatter, NumberOfstudent, Section WHERE IdClassroom=?";
+                sql = "UPDATE  Classroom SET IdStudent=?, IdMatter=?, NumberOfStudent=?, Section=? WHERE IdClassroom=?";
                 try ( PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) {
                     ps.setInt(1, pClassroom.getIdStudent());
                     ps.setInt(2, pClassroom.getIdMatter());
                     ps.setInt(3, pClassroom.getNumberOfStudent());
                     ps.setString(4, pClassroom.getSection());
+                    ps.setInt(5,pClassroom.getIdClassroom());
                     result = ps.executeUpdate();
                     ps.close();
 
@@ -126,7 +124,7 @@ public class ClassroomDAL {
         int result;
         String sql;
         try ( Connection conn = DBContext.obtenerConexion();) {
-            sql = "DELETE FROM Classroom WHERE Id=?";
+            sql = "DELETE FROM Classroom WHERE IdClassroom=?";
             try ( PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) {
                 ps.setInt(1, pClassroom.getIdClassroom());
                 result = ps.executeUpdate();
@@ -177,7 +175,8 @@ public class ClassroomDAL {
                 int Index = AsignarDatosResultSet(classroom, resultset, 0);
                 if (StudentMap.containsKey(classroom.getIdStudent()) == false) {
                     ArrayList<Student> students = new ArrayList();
-                    //StudentDAL.AsignarDatosResultSet(student, resulSet, index);
+                    //Metodo en revision, favor no utulizar, hasta que el autor lo descomente
+                    //StudentDAL.AsignarDatosResultSet(pStudent, resultset, Index)
                     StudentMap.put(classroom.getIdClassroom(), students);
                     //Posible problema futuro, relacion de uno a muchos
                     //Revisar tambien base de datos, averiguar si los campos de la bd coinciden realmente con las clases creadas en este proyecto
@@ -268,7 +267,7 @@ public class ClassroomDAL {
             String sql = "SELECT ";
             sql += ObtenerCampos();
             sql += ", ";
-            //sql += StudentDAL.ObtenerCampos();
+            sql += StudentDAL.ObtenerCampos();
             sql += " FROM Classroom c";
             sql += " JOIN Student s on (c.IdStudent = s.IdStudent)";
 

@@ -11,17 +11,17 @@ package syscaly.el;
 public class Student {
     private int IdStudent;
     private int NIE;
-    private String Name;
+    private String NameStudent;
     private String LastName;
     private String Turn;
 
     public Student() {
     }
 
-    public Student(int IdStudent, int NIE, String Name, String LastName, String Turn) {
+    public Student(int IdStudent, int NIE, String NameStudent, String LastName, String Turn) {
         this.IdStudent = IdStudent;
         this.NIE = NIE;
-        this.Name = Name;
+        this.NameStudent = NameStudent;
         this.LastName = LastName;
         this.Turn = Turn;
     }
@@ -42,12 +42,12 @@ public class Student {
         this.NIE = NIE;
     }
 
-    public String getName() {
-        return Name;
+    public String getNameStudent() {
+        return NameStudent;
     }
 
-    public void setName(String Name) {
-        this.Name = Name;
+    public void setNameStudent(String NameStudent) {
+        this.NameStudent = NameStudent;
     }
 
     public String getLastName() {

@@ -155,7 +155,7 @@ public class MatterDAL {
         try ( ResultSet resultSet = DBContext.obtenerResultSet(pPS);) { // obtener el ResultSet desde la clase DBContext
             while (resultSet.next()) { // Recorrer cada una de la fila que regresa la consulta  SELECT de la tabla Matter
                 Matter matter = new Matter();
-                AsignarDatosResultSet(matter, resultSet, 0)
+                AsignarDatosResultSet(, resultSet, 0)
 // Llenar las propiedaddes de la Entidad Matter con los datos obtenidos de la fila en el ResultSet
                 asignarDatosResultSet(matter, resultSet, 0);
                 pMatters.add(matter); // agregar la entidad Matter al ArrayList de Matter
