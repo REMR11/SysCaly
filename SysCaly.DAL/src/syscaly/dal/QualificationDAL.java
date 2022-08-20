@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.sql.ResultSet;
 import syscaly.el.*;
 
@@ -19,7 +18,7 @@ import syscaly.el.*;
 public class QualificationDAL {
 
     static String ObtenerCampos() {
-        return "q.IdQualifiaction, q.IdStudent, q.Period, q.Cycle, q.Qualification";
+        return "q.IdMatter, q.IdStudent, q.Period, q.Cycle, q.Qualification";
     }
 
     private static String ObtenerSelect(Qualification pQualification) {
@@ -32,15 +31,17 @@ public class QualificationDAL {
 
     private static boolean ExistsQualification(Qualification pQualification) throws Exception {
         boolean exists = false;
-        ArrayList<Qualification> qualifications = new ArrayList<Qualification>();
+        ArrayList<Qualification> qualifications = new ArrayList<>();
         try ( Connection conn = DBContext.obtenerConexion();) {
             String sql = ObtenerSelect(pQualification);
-            sql += " WHERE q.idQualification";
+            sql += " WHERE q.IdQualification";
             try ( PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) {
-                ps.setInt(1, pQualification.getIdStudent());
+                ps.setInt(1, pQualification.getIdMatter());
+                ps.setInt(2, pQualification.getIdStudent());
                 ps.setInt(2, pQualification.getPeriod());
-                ps.setInt(3, pQualification.getCycle());
-                ps.setInt(4, pQualification.getQualification());
+                ps.setInt(4, pQualification.getCycle());
+                ps.setInt(5, pQualification.getQualification());
+                ps.setInt(6, pQualification.getIdQualification());
                 ObtenerDatos(ps, qualifications);
                 ps.close();
             } catch (SQLException ex) {
@@ -66,12 +67,13 @@ public class QualificationDAL {
         boolean existe = ExistsQualification(pqualification);
         if (existe == false) {
             try ( Connection conn = DBContext.obtenerConexion();) {
-                sql = "INSERT INTO Qualification(IdStudent, Period, Cycle, Qualification) VALUES(?,?,?,?)";
+                sql = "INSERT INTO Qualification(IdMatter, IdStudent, Period, Cycle, Qualification) VALUES(?,?,?,?,?)";
                 try ( PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) {
-                    ps.setInt(1, pqualification.getIdStudent());
-                    ps.setInt(2, pqualification.getPeriod());
-                    ps.setInt(3, pqualification.getCycle());
-                    ps.setInt(4, pqualification.getQualification());
+                    ps.setInt(1, pqualification.getIdMatter());
+                    ps.setInt(2, pqualification.getIdStudent());
+                    ps.setInt(3, pqualification.getPeriod());
+                    ps.setInt(4, pqualification.getCycle());
+                    ps.setInt(5, pqualification.getQualification());
                     result = ps.executeUpdate();
                     ps.close();
                 } catch (SQLException ex) {
@@ -94,12 +96,13 @@ public class QualificationDAL {
         boolean existe = ExistsQualification(pquaQualification);
         if (existe == false) {
             try ( Connection conn = DBContext.obtenerConexion();) {
-                sql = "UPDATE Usuario SET IdStudent=?, Period=?, Cycle=?, Qualification=? WHERE IdQualification=?";
+                sql = "UPDATE Usuario SET IdMatter=?,  IdStudent=?, Period=?, Cycle=?, Qualification=? WHERE IdQualification=?";
                 try ( PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) {
-                    ps.setInt(1, pquaQualification.getIdStudent());
-                    ps.setInt(2, pquaQualification.getPeriod());
-                    ps.setInt(3, pquaQualification.getCycle());
-                    ps.setInt(4, pquaQualification.getQualification());
+                    ps.setInt(1, pquaQualification.getIdMatter());
+                    ps.setInt(2, pquaQualification.getIdStudent());
+                    ps.setInt(3, pquaQualification.getPeriod());
+                    ps.setInt(4, pquaQualification.getCycle());
+                    ps.setInt(5, pquaQualification.getQualification());
                     ps.setInt(6, pquaQualification.getIdQualification());
                     result = ps.executeUpdate();
                     ps.close();
@@ -112,7 +115,7 @@ public class QualificationDAL {
             }
         } else {
             result = 0;
-            throw new RuntimeException("Login ya existe");
+            throw new RuntimeException("Calificacion realizada");
         }
         return result;
     }
@@ -121,7 +124,7 @@ public class QualificationDAL {
         int result;
         String sql;
         try ( Connection conn = DBContext.obtenerConexion();) {
-            sql = "DELETE FROM Qualification WHERE IdQualification=?";
+            sql = "DELETE FROM Qualification q WHERE q.IdQualification=?";
             try ( PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) {
                 ps.setInt(1, pQualification.getIdQualification());
                 result = ps.executeUpdate();
@@ -139,6 +142,8 @@ public class QualificationDAL {
     static int AsignarDatosResultSet(Qualification pQualification, ResultSet pResultSet, int pIndex) throws Exception {
         pIndex++;
         pQualification.setIdQualification(pResultSet.getInt(pIndex));
+        pIndex++;
+        pQualification.setIdMatter(pResultSet.getInt(pIndex));
         pIndex++;
         pQualification.setIdStudent(pResultSet.getInt(pIndex));
         pIndex++;
@@ -214,9 +219,19 @@ public class QualificationDAL {
                 statement.setInt(pUtilQuery.getNumWhere(), pQualification.getIdQualification());
             }
         }
+        
+// verificar si se va incluir el campo IdRol en el filtro de la consulta SELECT de la tabla de Usuario
+        if (pQualification.getIdMatter()> 0) {
+            pUtilQuery.AgregarWhereAnd(" q.IdMatter=? "); // agregar el campo IdRol al filtro de la consulta SELECT y agregar en el WHERE o AND
+            if (statement != null) {
+                 // agregar el parametro del campo IdRol a la consulta SELECT de la tabla de Usuario
+                statement.setInt(pUtilQuery.getNumWhere(), pQualification.getIdMatter());
+            }
+        }
+        
         // verificar si se va incluir el campo IdRol en el filtro de la consulta SELECT de la tabla de Usuario
         if (pQualification.getIdStudent()> 0) {
-            pUtilQuery.AgregarWhereAnd(" s.IdStudent=? "); // agregar el campo IdRol al filtro de la consulta SELECT y agregar en el WHERE o AND
+            pUtilQuery.AgregarWhereAnd(" q.IdStudent=? "); // agregar el campo IdRol al filtro de la consulta SELECT y agregar en el WHERE o AND
             if (statement != null) {
                  // agregar el parametro del campo IdRol a la consulta SELECT de la tabla de Usuario
                 statement.setInt(pUtilQuery.getNumWhere(), pQualification.getIdStudent());
@@ -232,7 +247,7 @@ public class QualificationDAL {
         }
         // Verificar si se va incluir el campo Apellido en el filtro de la consulta SELECT de la tabla de Usuario
         if (pQualification.getCycle() >0) {
-            pUtilQuery.AgregarWhereAnd(" u.Cycle LIKE ? "); // agregar el campo Apellido al filtro de la consulta SELECT y agregar en el WHERE o AND
+            pUtilQuery.AgregarWhereAnd(" q.Cycle LIKE ? "); // agregar el campo Apellido al filtro de la consulta SELECT y agregar en el WHERE o AND
             if (statement != null) {
                  // agregar el parametro del campo Apellido a la consulta SELECT de la tabla de Usuario
                 statement.setString(pUtilQuery.getNumWhere(), "%" + pQualification.getCycle() + "%");

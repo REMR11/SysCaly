@@ -16,7 +16,7 @@ import syscaly.el.*;
 public class ClassroomDAL {
 
     static String ObtenerCampos() {
-        return "c.IdClassroom, c.IdStudent, c.IdMatter, c.NumberOfStudent, c.Section ";
+        return "c.IdClassroom, c.IdStudent, c.IdQualification, c.NumberOfStudent, c.Section ";
     }
 
     private static String ObtenerSelect(Classroom pClassroom) {
@@ -66,10 +66,10 @@ public class ClassroomDAL {
         if (existsC == false) {
             try ( Connection conn = DBContext.obtenerConexion();) {
 
-                sql = "INSERT INTO Classroom(IdStudent, IdMatter, NumberOfStudent, Section) VALUES(?,?,?,?)";
+                sql = "INSERT INTO Classroom(IdStudent, IdQualification, NumberOfStudent, Section) VALUES(?,?,?,?)";
                 try ( PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) {
                     ps.setInt(1, pClassroom.getIdStudent());
-                    ps.setInt(2, pClassroom.getIdMatter());
+                    ps.setInt(2, pClassroom.getIdQualification());
                     ps.setInt(3, pClassroom.getNumberOfStudent());
                     ps.setString(4, pClassroom.getSection());
                     result = ps.executeUpdate();
@@ -96,10 +96,10 @@ public class ClassroomDAL {
 
         if (existsC == false) {
             try ( Connection conn = DBContext.obtenerConexion();) {
-                sql = "UPDATE  Classroom SET IdStudent=?, IdMatter=?, NumberOfStudent=?, Section=? WHERE IdClassroom=?";
+                sql = "UPDATE  Classroom SET IdStudent=?, IdQualification=?, NumberOfStudent=?, Section=? WHERE IdClassroom=?";
                 try ( PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) {
                     ps.setInt(1, pClassroom.getIdStudent());
-                    ps.setInt(2, pClassroom.getIdMatter());
+                    ps.setInt(2, pClassroom.getIdQualification());
                     ps.setInt(3, pClassroom.getNumberOfStudent());
                     ps.setString(4, pClassroom.getSection());
                     ps.setInt(5,pClassroom.getIdClassroom());
@@ -144,7 +144,7 @@ public class ClassroomDAL {
         pIndex++;
         pClassroom.setIdStudent(pResulset.getInt(pIndex));
         pIndex++;
-        pClassroom.setIdMatter(pResulset.getInt(pIndex));
+        pClassroom.setIdQualification(pResulset.getInt(pIndex));
         pIndex++;
         pClassroom.setNumberOfStudent(pResulset.getInt(pIndex));
         pIndex++;
