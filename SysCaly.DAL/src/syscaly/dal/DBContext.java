@@ -24,23 +24,33 @@ public class DBContext {
     }
     static int TIPODB = TipoDB.SQLSERVER;
     
-    static String connectionUrl = "jdbc:sqlserver://DBSysCaly.mssql.somee.com;"
-            + "database=DBSysCaly;"
-            + "User=SysCaly_SQLLogin_1;"
+    //Version SqlServer
+    static String connectionUrl = "jdbc:sqlserver://SysCalyR.mssql.somee.com;"
+            + "database=SysCalyR;"
+            + "User=UserSysCaly_SQLLogin_1;"
             + "password=ic8gl8aft2;"
             + "loginTimeout=30;encrypt=false;trustServerCertificate=false";
     
+    //Version MySQL
     static String driver = "com.mysql.cj.jdbc.Driver";
-    static String url = "jdbc:mysql://DBSysCaly.mssql.somee.com/";
+    static String url = "jdbc:mysql://SysCalyR.mssql.somee.com//SysCalyR";
     static String usuario = "UserSysCaly_SQLLogin_1";
     static String password = "ic8gl8aft2";
 
     Connection conn = null;
 
       public static Connection obtenerConexion() throws SQLException {
-        //DriverManager.getDriver(driver);
-        DriverManager.registerDriver(new com.microsoft.sqlserver.jdbc.SQLServerDriver());
+        
+        //En Caso de error la version MySql, Comenta y descomenta la version SQLServer
+ 
+        //Versio MySQL
+        DriverManager.getDriver(driver);
         Connection connection = DriverManager.getConnection(connectionUrl); 
+        
+        //Version SQLServer
+        //Connection connection = DriverManager.getConnection(connectionUrl); 
+        //DriverManager.registerDriver(new com.microsoft.sqlserver.jdbc.SQLServerDriver());
+        
         return connection; 
     }
     public static Statement createStatement(Connection pConn) throws SQLException {
