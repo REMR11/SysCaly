@@ -69,8 +69,8 @@ public class QualificationServlet extends HttpServlet {
      
         
     try {
-        Qualification qual = new Qualification();
-        ArrayList<Qualification> quals = new QualificationDAL.();
+        Qualification qual = obtenerQualification(request);
+        ArrayList<Qualification> quals =  QualificationDAL.buscar(qual);
       request.setAttribute("roles", quals);
             request.getRequestDispatcher("Views/Rol/index.jsp").forward(request, response); // Direccionar al jsp index de Rol
         } catch (Exception ex) {
