@@ -14,6 +14,7 @@ public class Student {
     private String NameStudent;
     private String LastName;
     private String Turn;
+     private int Top_aux;
 
     public Student() {
     }
@@ -65,5 +66,11 @@ public class Student {
     public void setTurn(String Turn) {
         this.Turn = Turn;
     }
-    
+    public int getTop_aux() {
+        return Top_aux;
+    }
+
+    public void setTop_aux(int Top_aux) {
+        this.Top_aux = Top_aux;
+    }
 }

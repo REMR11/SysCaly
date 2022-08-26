@@ -12,5 +12,5 @@ import javax.servlet.ServletException;
  * @author Fsociety
  */
 public interface IAuthorize {
-      void authorize() throws ServletException, IOException;
+    void authorize() throws ServletException, IOException;
 }

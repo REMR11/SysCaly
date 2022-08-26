@@ -11,77 +11,176 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+ 
+import java.util.ArrayList;
+import syscaly.dal.UserSysDal;
+import syscaly.el.UserSys;
+import SysCaly.UIWeb.utils.*;
 /**
  *
  * @author Fsociety
  */
-@WebServlet(name = "UserSysServlet", urlPatterns = {"/UserSysServlet"})
+@WebServlet(name = "UserSysServlet", urlPatterns = {"/UserSys"})
 public class UserSysServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet UserSysServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet UserSysServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+  
+   private UserSys obtenerUsuario(HttpServletRequest request){
+       String accion = Utility.getParameter(request,"accion","Index");
+       UserSys user = new UserSys();
+       if(accion.equals("create")==false){
+       user.setIdRol(Integer.parseInt(Utility.getParameter(request,"Id", "0")));
+       
+       }
+        user.setNameUser(Utility.getParameter(request, "nombre", ""));
+        
+        if(accion.equals("Index")){
+        user.setTop_aux(Integer.parseInt(Utility.getParameter(request, "top_aux", "10")));
+       user.setTop_aux(user.getTop_aux() == 0 ? Integer.MAX_VALUE : user.getTop_aux());
+         }
+        
+        return user;
+    }
+    private void doGetRequestIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            UserSys user = new UserSys(); 
+            user.setTop_aux(10); 
+            ArrayList<UserSys> Users = UserSysDal.buscar(user); 
+            request.setAttribute("roles", Users); 
+            request.setAttribute("top_aux", user.getTop_aux());
+            request.getRequestDispatcher("Views/Rol/index.jsp").forward(request, response); 
+        } catch (Exception ex) {
+            Utility.enviarError(ex.getMessage(), request, response); 
+        }
+    }
+    
+    
+      private void doPostRequestIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            UserSys user = obtenerUsuario(request); 
+            ArrayList<UserSys> Users = UserSysDal.buscar(user); 
+            request.setAttribute("Users", Users); 
+            request.setAttribute("top_aux", user.getTop_aux());
+            request.getRequestDispatcher("Views/UserSys/index.jsp").forward(request, response); // Direccionar al jsp index de Rol
+        } catch (Exception ex) {
+            // Enviar al jsp de error si hay un Exception 
+            Utility.enviarError(ex.getMessage(), request, response);
+        }
+    }
+   
+       private void doGetRequestCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("Views/UserSys/create.jsp").forward(request, response);
+    }
+     
+     
+     private void doPostRequestCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            UserSys user = obtenerUsuario(request); 
+            int result = UserSysDal.crear(user);
+            if (result != 0) { 
+                request.setAttribute("accion", "index");
+                doGetRequestIndex(request, response); 
+            } else {
+                Utility.enviarError("No se pudo completar el registro", request, response);
+            }
+        } catch (Exception ex) {
+            Utility.enviarError(ex.getMessage(), request, response);
+        }
+
+    }
+      private void requestObtenerPorId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            UserSys user = obtenerUsuario(request); 
+            UserSys User_result = UserSysDal.obtenerPorId(user);
+            if (User_result.getIdRol()> 0) { // Si el Id es mayor a cero.
+                request.setAttribute("rol", User_result);
+            } else {
+                Utility.enviarError("El Id:" + user.getIdRol() + " no existe en la tabla de UserSys", request, response);
+            }
+        } catch (Exception ex) {
+            Utility.enviarError(ex.getMessage(), request, response);
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+        private void doGetRequestEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        requestObtenerPorId(request, response);
+        request.getRequestDispatcher("Views/UserSys/edit.jsp").forward(request, response);
+    } 
+        
+        private void doPostRequestEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            UserSys user = obtenerUsuario(request); 
+            int result = UserSysDal.modificar(user);
+            if (result != 0) { 
+                request.setAttribute("accion", "index");
+                doGetRequestIndex(request, response); 
+            } else {
+                Utility.enviarError("No se logro actualizar el registro", request, response);
+            }
+        } catch (Exception ex) {
+            Utility.enviarError(ex.getMessage(), request, response);
+        }
     }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+        
+          private void doGetRequestDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+       requestObtenerPorId(request, response);
+        request.getRequestDispatcher("Views/UserSys/details.jsp").forward(request, response);
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+          
+          
+          
+          private void doGetRequestDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        requestObtenerPorId(request, response);
+        request.getRequestDispatcher("Views/UserSys/delete.jsp").forward(request, response);
+    }
+          
+           private void doPostRequestDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            UserSys user = obtenerUsuario(request); 
+            int result = UserSysDal.eliminar(user);
+            if (result != 0) {
+                request.setAttribute("accion", "index");
+                doGetRequestIndex(request, response);
+            } else {
+                Utility.enviarError("No se logro eliminar el registro", request, response);
+            }
+        } catch (Exception ex) {
+            Utility.enviarError(ex.getMessage(), request, response);
+        }
+    }
+           
+           
+            protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+       // processRequest(request, response);
+       SessionUser.authorize(request, response, () -> { 
+           
+            String accion = Utility.getParameter(request, "accion", "index");
+            switch (accion) {
+                case "index":
+                    request.setAttribute("accion", accion);
+                    doGetRequestIndex(request, response); 
+                    break;
+                case "create":
+                    request.setAttribute("accion", accion);
+                    doGetRequestCreate(request, response); 
+                    break;
+                case "edit":
+                    request.setAttribute("accion", accion);
+                    doGetRequestEdit(request, response);
+                    break;
+                case "delete":
+                    request.setAttribute("accion", accion);
+                    doGetRequestDelete(request, response); 
+                    break;
+                case "details":
+                    request.setAttribute("accion", accion);
+                    doGetRequestDetails(request, response); 
+                    break;
+                default:
+                    request.setAttribute("accion", accion);
+                    doGetRequestIndex(request, response); 
+            }
+        });
+       
+    }
 }

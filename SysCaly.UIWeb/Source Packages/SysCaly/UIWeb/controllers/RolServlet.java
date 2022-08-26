@@ -18,7 +18,6 @@ import syscaly.dal.RolDAL;
 import syscaly.el.Rol;
 import SysCaly.UIWeb.utils.*;
 
-//import utilizados para la ejecucion de los jsp 
 
 
 
@@ -52,27 +51,23 @@ public class RolServlet extends HttpServlet {
 
     private void doGetRequestIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            Rol rol = new Rol(); // Crear una instancia  de la entidad de Rol.
-            rol.setTop_aux(10); // Agregar el Top_aux con el valor de 10 a la propiedad Top_aux de rol.
-            ArrayList<Rol> roles = RolDAL.buscar(rol); // Ir a la capa de acceso a datos y buscar los registros de Rol.
-            // El request.setAttribute se utiliza para enviar datos desde un servlet a un jsp.
-            request.setAttribute("roles", roles); // Enviar los roles al jsp utilizando el request.setAttribute con el nombre del atributo roles.
-            // Enviar el Top_aux de Rol al jsp utilizando el request.setAttribute con el nombre del atributo top_aux.
+            Rol rol = new Rol(); 
+            rol.setTop_aux(10); 
+            ArrayList<Rol> roles = RolDAL.buscar(rol); 
+            request.setAttribute("roles", roles); 
             request.setAttribute("top_aux", rol.getTop_aux());
-            // El request.getRequestDispatcher nos permite direccionar a un jsp desde un servlet.              
-            request.getRequestDispatcher("Views/Rol/index.jsp").forward(request, response); // Direccionar al jsp index de Rol.
+            request.getRequestDispatcher("Views/Rol/index.jsp").forward(request, response); 
         } catch (Exception ex) {
-            Utility.enviarError(ex.getMessage(), request, response); // Enviar al jsp de error si hay un Exception.
+            Utility.enviarError(ex.getMessage(), request, response); 
         }
     }
     
     
       private void doPostRequestIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            Rol rol = obtenerRol(request); // Llenar la instancia de Rol con los parámetros enviados en el request 
-            ArrayList<Rol> roles = RolDAL.buscar(rol); // Buscar los roles que cumple con los datos enviados en el request
-            request.setAttribute("roles", roles); // Enviar los roles al jsp utilizando el request.setAttribute con el nombre del atributo roles
-            // Enviar el Top_aux de Rol al jsp utilizando el request.setAttribute con el nombre del atributo top_aux
+            Rol rol = obtenerRol(request); 
+            ArrayList<Rol> roles = RolDAL.buscar(rol); 
+            request.setAttribute("roles", roles); 
             request.setAttribute("top_aux", rol.getTop_aux());
             request.getRequestDispatcher("Views/Rol/index.jsp").forward(request, response); // Direccionar al jsp index de Rol
         } catch (Exception ex) {
@@ -82,44 +77,35 @@ public class RolServlet extends HttpServlet {
     }
     
      private void doGetRequestCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // direccionar al jsp create de Rol
         request.getRequestDispatcher("Views/Rol/create.jsp").forward(request, response);
     }
      
      
      private void doPostRequestCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            Rol rol = obtenerRol(request); // Llenar la instancia de Rol con los parámetros enviados en el request.
-            // Enviar los datos de Rol a la capa de accesoa a datos para que lo almacene en la base de datos el registro.
+            Rol rol = obtenerRol(request); 
             int result = RolDAL.crear(rol);
-            if (result != 0) { // Si el result es diferente a cero significa que los datos fueron ingresados correctamente.
-                // Enviar el atributo accion con el valor index al jsp de index
+            if (result != 0) { 
                 request.setAttribute("accion", "index");
-                doGetRequestIndex(request, response); // ir al metodo doGetRequestIndex para que nos direcciones al jsp index
+                doGetRequestIndex(request, response); 
             } else {
-                // Enviar al jsp de error el siguiente mensaje. No se logro registrar un nuevo registro
-                Utility.enviarError("No se logro registrar un nuevo registro", request, response);
+                Utility.enviarError("No se pudo completar el registro", request, response);
             }
         } catch (Exception ex) {
-            // Enviar al jsp de error si hay un Exception
             Utility.enviarError(ex.getMessage(), request, response);
         }
 
     }
        private void requestObtenerPorId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            Rol rol = obtenerRol(request); // Llenar la instancia de Rol con los parámetros enviados en el request.
-            // Obtener desde la capa de acceso a datos el rol por Id.
+            Rol rol = obtenerRol(request); 
             Rol rol_result = RolDAL.obtenerPorId(rol);
             if (rol_result.getIdRol()> 0) { // Si el Id es mayor a cero.
-                // Enviar el atributo rol con el valor de los datos del rol de nuestra base de datos a un jsp
                 request.setAttribute("rol", rol_result);
             } else {
-                // Enviar al jsp de error el siguiente mensaje. El Id: ? no existe en la tabla de Rol
                 Utility.enviarError("El Id:" + rol.getIdRol() + " no existe en la tabla de Rol", request, response);
             }
         } catch (Exception ex) {
-            // enviar al jsp de error si hay un Exception
             Utility.enviarError(ex.getMessage(), request, response);
         }
     }
@@ -127,35 +113,27 @@ public class RolServlet extends HttpServlet {
        
        
       private void doGetRequestEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Enviar el rol al jsp de edit que se obtiene por Id
         requestObtenerPorId(request, response);
-        // Direccionar al jsp edit de Rol
         request.getRequestDispatcher("Views/Rol/edit.jsp").forward(request, response);
     } 
        
         private void doPostRequestEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            Rol rol = obtenerRol(request); // Llenar la instancia de Rol con los parámetros enviados en el request.
-            // Enviar los datos de Rol a la capa de accesoa a datos para modificar el registro.
+            Rol rol = obtenerRol(request); 
             int result = RolDAL.modificar(rol);
-            if (result != 0) { // Si el result es diferente a cero significa que los datos fueron modificado correctamente.
-                // Enviar el atributo accion con el valor index al jsp de index.
+            if (result != 0) { 
                 request.setAttribute("accion", "index");
                 doGetRequestIndex(request, response); // Ir al metodo doGetRequestIndex para que nos direcciones al jsp index.
             } else {
-                // Enviar al jsp de error el siguiente mensaje. No se logro actualizar el registro.
                 Utility.enviarError("No se logro actualizar el registro", request, response);
             }
         } catch (Exception ex) {
-            // Enviar al jsp de error si hay un Exception
             Utility.enviarError(ex.getMessage(), request, response);
         }
     }
        
          private void doGetRequestDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Enviar el rol al jsp de details que se obtiene por Id.
         requestObtenerPorId(request, response);
-        // Direccionar al jsp details de Rol.
         request.getRequestDispatcher("Views/Rol/details.jsp").forward(request, response);
     }
          
@@ -164,37 +142,22 @@ public class RolServlet extends HttpServlet {
          
          
           private void doGetRequestDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Enviar el rol al jsp de delete que se obtiene por Id.
         requestObtenerPorId(request, response);
-        // Direccionar al jsp delete de Rol.
         request.getRequestDispatcher("Views/Rol/delete.jsp").forward(request, response);
     }
 
-    /**
-     * En este método se ejecutara cuando se envie una peticion post al servlet
-     * Rol , y el parámetro accion sea igual delete.
-     *
-     * @param request en este parámetro vamos a recibir el request de la
-     * peticion post enviada al servlet Rol
-     * @param response
-     * @throws javax.servlet.ServletException
-     * @throws java.io.IOException
-     */
+   
     private void doPostRequestDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            Rol rol = obtenerRol(request); // Llenar la instancia de Rol con los parámetros enviados en el request.
-            // Enviar los datos de Rol a la capa de accesoa a datos para que elimine el registro.
+            Rol rol = obtenerRol(request); 
             int result = RolDAL.eliminar(rol);
-            if (result != 0) {// Si el result es diferente a cero significa que los datos fueron eliminados correctamente.
-                // Enviar el atributo accion con el valor index al jsp de index.
+            if (result != 0) {
                 request.setAttribute("accion", "index");
-                doGetRequestIndex(request, response); // Ir al método doGetRequestIndex para que nos direccione al jsp index.
+                doGetRequestIndex(request, response);
             } else {
-                // Enviar al jsp de error el siguiente mensaje. No se logro eliminar el registro.
                 Utility.enviarError("No se logro eliminar el registro", request, response);
             }
         } catch (Exception ex) {
-            // Enviar al jsp de error si hay un Exception.
             Utility.enviarError(ex.getMessage(), request, response);
         }
     }
@@ -215,40 +178,33 @@ public class RolServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        // processRequest(request, response);
-       SessionUser.authorize(request, response, () -> { // Expresion Lambda  
-            // Obtener el parámetro accion del request
-            String accion = Utilidad.getParameter(request, "accion", "index");
-            // Hacer un switch para decidir a cual metodo ir segun el valor que venga en el parámetro de accion.
+       SessionUser.authorize(request, response, () -> { 
+           
+            String accion = Utility.getParameter(request, "accion", "index");
             switch (accion) {
                 case "index":
-                    // Enviar el atributo accion al jsp de index.
                     request.setAttribute("accion", accion);
-                    doGetRequestIndex(request, response); // Ir al método doGetRequestIndex.
+                    doGetRequestIndex(request, response); 
                     break;
                 case "create":
-                    // Enviar el atributo accion al jsp de create.
                     request.setAttribute("accion", accion);
-                    doGetRequestCreate(request, response); // Ir al metodo doGetRequestCreate.
+                    doGetRequestCreate(request, response); 
                     break;
                 case "edit":
-                    // Enviar el atributo accion al jsp de edit.
                     request.setAttribute("accion", accion);
-                    doGetRequestEdit(request, response);// Ir al metodo doGetRequestEdit.
+                    doGetRequestEdit(request, response);
                     break;
                 case "delete":
-                    // Enviar el atributo accion al jsp de delete.
                     request.setAttribute("accion", accion);
-                    doGetRequestDelete(request, response); // Ir al metodo doGetRequestDelete.
+                    doGetRequestDelete(request, response); 
                     break;
                 case "details":
-                    // Enviar el atributo accion al jsp de details.
                     request.setAttribute("accion", accion);
-                    doGetRequestDetails(request, response); // Ir al metodo doGetRequestDetails.
+                    doGetRequestDetails(request, response); 
                     break;
                 default:
-                    // Enviar el atributo accion al jsp de index.
                     request.setAttribute("accion", accion);
-                    doGetRequestIndex(request, response); // Ir al metodo doGetRequestIndex.
+                    doGetRequestIndex(request, response); 
             }
         });
        

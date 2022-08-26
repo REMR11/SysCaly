@@ -87,4 +87,9 @@ public class SessionUser {
             response.sendRedirect("Usuario?accion=login"); // direccionar al servlet de Usuario accion login, en el caso que no tenga permiso el usuario
         }
     }
+     
+     public static void cerrarSession(HttpServletRequest request) {
+        HttpSession session = (HttpSession) request.getSession();
+        session.invalidate(); // eliminanos cualquier variable de session, que tenga creada un usuario que inicio session en el sistema.
+    }
 }

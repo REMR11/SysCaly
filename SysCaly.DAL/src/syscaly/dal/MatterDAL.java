@@ -34,7 +34,7 @@ public class MatterDAL {
         try (Connection conn = DBContext.obtenerConexion();) { // Obtener la conexion desde la clase DBContext y encerrarla en try para cierre automatico
             sql = "INSERT INTO Matter(Nombre) VALUES(?)"; // Definir la consulta INSERT a la tabla de Matter utilizando el simbolo ? para enviar parametros
             try (PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) { // Obtener el PreparedStatement desde la clase DBContext
-                ps.setString(1, pMatter.getNombre()); // Agregar el parametro a la consulta donde estan el simbolo ? #1  
+                ps.setString(1, pMatter.getNameMatter()); // Agregar el parametro a la consulta donde estan el simbolo ? #1  
                 result = ps.executeUpdate(); // Ejecutar la consulta INSERT en la base de datos
                 ps.close(); // Cerrar el PreparedStatement
             } catch (SQLException ex) {
@@ -54,8 +54,8 @@ public class MatterDAL {
         try (Connection conn = DBContext.obtenerConexion();) { // Obtener la conexion desde la clase DBContext y encerrarla en try para cierre automatico
             sql = "UPDATE Matter SET Nombre=? WHERE Id=?"; // Definir la consulta UPDATE a la tabla de Matter utilizando el simbolo ? para enviar parametros
             try (PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) { // Obtener el PreparedStatement desde la clase DBContext
-                ps.setString(1, pMatter.getNombre()); // Agregar el parametro a la consulta donde estan el simbolo ? #1  
-                ps.setInt(2, pMatter.getId()); // Agregar el parametro a la consulta donde estan el simbolo ? #2  
+                ps.setString(1, pMatter.getNameMatter()); // Agregar el parametro a la consulta donde estan el simbolo ? #1  
+                ps.setInt(2, pMatter.getIdMatter()); // Agregar el parametro a la consulta donde estan el simbolo ? #2  
                 result = ps.executeUpdate(); // Ejecutar la consulta UPDATE en la base de datos
                 ps.close(); // Cerrar el PreparedStatement
             } catch (SQLException ex) {
@@ -75,7 +75,7 @@ public class MatterDAL {
         try (Connection conn = DBContext.obtenerConexion();) { // Obtener la conexion desde la clase DBContext y encerrarla en try para cierre automatico
             sql = "DELETE FROM Matter WHERE Id=?";  // Definir la consulta DELETE a la tabla de Matter utilizando el simbolo ? para enviar parametros
             try (PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) { // Obtener el PreparedStatement desde la clase DBContext
-                ps.setInt(1, pMatter.getId()); // Agregar el parametro a la consulta donde estan el simbolo ? #1 
+                ps.setInt(1, pMatter.getIdMatter()); // Agregar el parametro a la consulta donde estan el simbolo ? #1 
                 result = ps.executeUpdate();  // Ejecutar la consulta DELETE en la base de datos
                 ps.close(); // Cerrar el PreparedStatement
             } catch (SQLException ex) {
@@ -93,9 +93,9 @@ public class MatterDAL {
     static int asignarDatosResultSet(Matter pMatter, ResultSet pResultSet, int pIndex) throws Exception {
         //  SELECT r.Id(indice 1),r.Nombre(indice 2) * FROM Matter
         pIndex++;
-        pMatter.setId(pResultSet.getInt(pIndex)); // index 1
+        pMatter.setIdMatter(pResultSet.getInt(pIndex)); // index 1
         pIndex++;
-        pMatter.setNombre(pResultSet.getString(pIndex)); // index 2
+        pMatter.setNameMatter(pResultSet.getString(pIndex)); // index 2
         return pIndex;
     }
     
@@ -121,7 +121,7 @@ public class MatterDAL {
             String sql = obtenerSelect(pMatter); // Obtener la consulta SELECT de la tabla Matter
             sql += " WHERE r.Id=?"; // Concatenar a la consulta SELECT de la tabla Matter el WHERE 
             try (PreparedStatement ps = DBContext.createPreparedStatement(conn, sql);) { // Obtener el PreparedStatement desde la clase DBContext
-                ps.setInt(1, pMatter.getId()); // Agregar el parametro a la consulta donde estan el simbolo ? #1 
+                ps.setInt(1, pMatter.getIdMatter()); // Agregar el parametro a la consulta donde estan el simbolo ? #1 
                 obtenerDatos(ps, roles); // Llenar el ArrayList de Matter con las fila que devolvera la consulta SELECT a la tabla de Matter
                 ps.close(); // Cerrar el PreparedStatement
             } catch (SQLException ex) {
@@ -162,19 +162,19 @@ public class MatterDAL {
     // Metodo para asignar los filtros de la consulta SELECT de la tabla de Matter de forma dinamica
     static void querySelect(Matter pMatter, DBContext.UtilQuery pUtilQuery) throws SQLException {
         PreparedStatement statement = pUtilQuery.getStatement(); // Obtener el PreparedStatement al cual aplicar los parametros
-        if (pMatter.getId() > 0) { // Verificar si se va incluir el campo Id en el filtro de la consulta SELECT de la tabla de Matter
+        if (pMatter.getIdMatter()> 0) { // Verificar si se va incluir el campo Id en el filtro de la consulta SELECT de la tabla de Matter
             pUtilQuery.AgregarWhereAnd(" r.Id=? "); // Agregar el campo Id al filtro de la consulta SELECT y agregar en el WHERE o AND
             if (statement != null) { 
                 // Agregar el parametro del campo Id a la consulta SELECT de la tabla de Matter
-                statement.setInt(pUtilQuery.getNumWhere(), pMatter.getId()); 
+                statement.setInt(pUtilQuery.getNumWhere(), pMatter.getIdMatter()); 
             }
         }
         // Verificar si se va incluir el campo Nombre en el filtro de la consulta SELECT de la tabla de Matter
-        if (pMatter.getNombre() != null && pMatter.getNombre().trim().isEmpty() == false) {
+        if (pMatter.getNameMatter()!= null && pMatter.getNameMatter().trim().isEmpty() == false) {
             pUtilQuery.AgregarWhereAnd(" r.Nombre LIKE ? "); // Agregar el campo Nombre al filtro de la consulta SELECT y agregar en el WHERE o AND
             if (statement != null) {
                 // Agregar el parametro del campo Nombre a la consulta SELECT de la tabla de Matter
-                statement.setString(pUtilQuery.getNumWhere(), "%" + pMatter.getNombre() + "%"); 
+                statement.setString(pUtilQuery.getNumWhere(), "%" + pMatter.getNameTeacher()+ "%"); 
             }
         }
     }
