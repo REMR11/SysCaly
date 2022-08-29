@@ -1,0 +1,153 @@
+{
+  "classes": {
+    "SQL": {
+      "fg": "166"
+    },
+    "JS": {
+      "fg": "221"
+    },
+    "Py": {
+      "fg": "25"
+    },
+    "schema": {
+      "text": "%schema% "
+    },
+    "noschema": {
+      "text": ""
+    },
+    "disconnected": {},
+    "sslSSL": {
+      "text": "(ssl) ",
+      "fg": 170
+    },
+    "ssl": {
+      "text": ""
+    },
+    "hostx": {
+      "text": "%transport%+ "
+    },
+    "hostc": {
+      "text": "%transport% "
+    },
+    "ctrx": {
+      "text": "",
+      "fg": 15
+    },
+    "ctrx.": {
+      "text": "- ",
+      "fg": 7
+    },
+    "ctrx*": {
+      "text": "* ",
+      "fg": 15
+    },
+    "ctrx^": {
+      "text": "* ",
+      "fg": 15
+    },
+    "ctrx*.": {
+      "text": "* ",
+      "fg": 15
+    },
+    "ctrx^.": {
+      "text": "* ",
+      "fg": 15
+    },
+    "production": {
+      "text": " PRODUCTION ",
+      "bg": "red",
+      "fg": "white"
+    }
+  },
+  "variables": {
+    "is_production": {
+      "match": {
+        "pattern": "*;%host%;*",
+        "value": ";%env:PRODUCTION_SERVERS%;"
+      },
+      "if_true": "production",
+      "if_false": ""
+    },
+    "target": {
+      "match": {
+        "pattern": "%socket%",
+        "value": ""
+      },
+      "if_true": "%host%:%port%",
+      "if_false": "localhost"
+    },
+    "transport": {
+      "match": {
+        "pattern": "%ssh_host%",
+        "value": ""
+      },
+      "if_true": "%target%",
+      "if_false": "%ssh_host% > %target%"
+    }
+  },
+  "symbols": {
+    "separator": "",
+    "separator2": "",
+    "ellipsis": "..."
+  },
+  "prompt": {
+    "text": "> ",
+    "cont_text": "%linectx%> "
+  },
+  "segments": [
+    {
+      "classes": [
+        "disconnected%host%",
+        "%is_production%"
+      ]
+    },
+    {
+      "text": "My",
+      "fg": 23
+    },
+    {
+      "separator": "",
+      "text": "SQL ",
+      "fg": 166
+    },
+    {
+      "classes": [
+        "disconnected%host%",
+        "host%session%"
+      ],
+      "shrink": "truncate_on_dot",
+      "fg": 123,
+      "weight": 10,
+      "padding": 0
+    },
+    {
+      "classes": [
+        "ssl%ssl%"
+      ],
+      "padding": 0
+    },
+    {
+      "classes": [
+        "noschema%schema%",
+        "schema"
+      ],
+      "fg": 197,
+      "shrink": "ellipsize",
+      "weight": -1,
+      "padding": 0
+    },
+    {
+      "classes": [
+        "%session%trx%trx%%autocommit%"
+      ],
+      "weight": -1
+    },
+    {
+      "classes": [
+        "%Mode%"
+      ],
+      "text": "%Mode%",
+      "padding": 0
+    }
+  ]
+}

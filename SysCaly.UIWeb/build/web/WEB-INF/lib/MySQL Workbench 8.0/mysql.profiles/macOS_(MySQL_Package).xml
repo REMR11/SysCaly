@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<data>
+    <value type="dict">
+    <value type="string" key="sys.config.path">/etc/my.cnf</value>
+    <value type="string" key="sys.config.section">mysqld</value>
+      
+    <value type="string" key="sys.mysqld.start">launchctl load -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist</value>
+    <value type="string" key="sys.mysqld.stop">launchctl unload -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist</value>
+    <value type="int" key="sys.usesudo">1</value>
+
+    <value type="string" key="sys.system">macOS</value>
+    <value type="string" key="serverVersion">8.0</value>
+  </value>
+</data>
+  
