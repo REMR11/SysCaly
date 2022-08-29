@@ -20,7 +20,7 @@ public class UserSys {
     private int NIE;
     private String NameUser;
     private String LastName;
-    private String Login;
+        private String Login;
     private String Password;
     private String ConfirmPassword;
     private byte StatusUser;

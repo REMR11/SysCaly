@@ -3,9 +3,9 @@
     Created on : 19 ago 2022, 16:13:15
     Author     : Fsociety
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="SysCaly.UIWeb.utils.*"%>
+<%-- 
 <nav>
     <div class="nav-wrapper blue">
         <a href="Home" class="brand-logo">SysCaly</a>
@@ -30,5 +30,5 @@
     <li><a href="UserSys?accion=login">Cerrar sesi�n</a></li>
         <%}%>
 </ul>
-
+--%>
 

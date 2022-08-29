@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="sysseguridad.entidadesdenegocio.Usuario"%>
-<% Usuario usuario = (Usuario) request.getAttribute("usuario");%>
+<%@page import="syscaly.el.UserSys"%>
+<% UserSys usuario = (UserSys) request.getAttribute("usuario");%>
 <!DOCTYPE html>
 <html>
     <head>        
@@ -13,7 +13,7 @@
             <h5>Cambiar password</h5>
             <form action="Usuario" method="post" onsubmit="return  validarFormulario()">
                 <input type="hidden" name="accion" value="<%=request.getAttribute("accion")%>"> 
-                <input type="hidden" name="id" value="<%=usuario.getId()%>">  
+                <input type="hidden" name="id" value="<%=usuario.getIdUser()%>">  
                 <div class="row">                   
                     <div class="input-field col l4 s12">
                         <input  id="txtLogin" type="text" name="login" value="<%=usuario.getLogin()%>" readonly>
