@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+  <gstructs xmlns:attr="http://www.mysql.com/grt/struct-attribute">    
+      <requires file="structs.xml"/>    
+      <requires file="structs.db.xml"/>    
+
+      <gstruct name="db.mgmt.Management" parent="GrtObject" attr:desc="Management for RDBMS drivers">
+          <members>
+              <member name="rdbms" type="list" content-type="object" content-struct-name="db.mgmt.Rdbms" owned="1" attr:desc="a list of Rdbms with available drivers"/>
+              <member name="storedConns" type="list" content-type="object" content-struct-name="db.mgmt.Connection" owned="1" attr:desc="a list of stored connections"/>
+              <member name="storedInstances" type="list" content-type="object" content-struct-name="db.mgmt.ServerInstance" owned="1" attr:desc="a list of stored DB server instances"/>
+              <member name="otherStoredConns" type="list" content-type="object" content-struct-name="db.mgmt.Connection" owned="1" attr:desc="a list of stored non-MySQL connections"/>
+              <member name="datatypeGroups" type="list" content-type="object" content-struct-name="db.DatatypeGroup" owned="1" attr:desc="list of datatypegroups"/>
+          </members>
+      </gstruct>
+
+      <gstruct name="db.mgmt.Rdbms" parent="GrtObject" attr:desc="Relational Database Management System">
+          <members>
+              <member name="caption" type="string" attr:desc="the caption that is displayed in the UI"/>
+              <member name="drivers" type="list" content-type="object" content-struct-name="db.mgmt.Driver" owned="1" attr:desc="a list of drivers that can be used to connect to the database system"/>
+              <member name="defaultDriver" type="object" struct-name="db.mgmt.Driver" attr:desc="the default driver to use"/>
+              <member name="databaseObjectPackage" type="string" attr:desc="specifies the schema structs to use, e.g. db.mysql"/>
+              <member name="simpleDatatypes" type="list" content-type="object" content-struct-name="db.SimpleDatatype" owned="1" attr:desc="the list of simple datatypes the RDBMS offers"/>
+              <member name="characterSets" type="list" content-type="object" content-struct-name="db.CharacterSet" owned="1" attr:desc="the list of character sets the RDBMS offers"/>
+              <member name="version" type="object" struct-name="GrtVersion" owned="1" attr:desc="version of the catalog's database"/>
+              <member name="privilegeNames" type="list" content-type="object" content-struct-name="db.mgmt.PrivilegeMapping" owned="1" attr:desc="list of privilege names that are available in this RDBMS"/>
+              <member name="maximumIdentifierLength" type="int" attr:desc="maximum length for identifiers (schema, table, column, index etc)"/>
+              <member name="doesSupportCatalogs" type="int" attr:desc="Whether the RDBMS supports the notion of a database catalog"/>
+          </members>
+      </gstruct>
+
+      <gstruct name="db.mgmt.PrivilegeMapping" parent="GrtObject" attr:desc="specifies which privileges are available for this object type">
+          <members>
+              <member name="structName" type="string" attr:desc="the struct of the database object"/>
+              <member name="privileges" type="list" content-type="string" attr:desc="the list of available privileges for this object type"/>
+          </members>
+      </gstruct>
+
+      <gstruct name="db.mgmt.Driver" parent="GrtObject" attr:desc="information about a database driver">
+          <members>
+              <member name="caption" type="string" attr:desc="the caption that is displayed in the UI"/>
+              <member name="description" type="string" attr:desc="a short description of the driver"/>
+              <member name="filesTarget" type="string" attr:desc="location where the driver files are installed"/>
+              <member name="files" type="list" content-type="string" attr:desc="filename(s) of the driver"/>
+              <member name="driverLibraryName" type="string" attr:desc="location of the driver library"/>
+              <!--member name="downloadUrl" type="string" attr:desc="Url where to download the driver"/-->
+
+              <member name="parameters" type="list" content-struct-name="db.mgmt.DriverParameter" content-type="object" owned="1" attr:desc="the parameters the driver supports"/>
+              <!--member name="defaultModules" type="dict" content-type="string" attr:desc="the default modules"/-->
+              <member name="hostIdentifierTemplate" type="string"/>
+              <!--member name="isAccessable" type="int" attr:desc="set to 1 if the driver is accessable"/>
+              <member name="isInstalled" type="int" attr:desc="set to 1 if the driver is installed"/-->
+          </members>
+      </gstruct>
+
+      <!--gstruct name="db.mgmt.JdbcDriver" parent="db.mgmt.Driver" attr:desc="information about a Jdbc driver">
+          <members>
+              <member name="className" type="string" attr:desc="the classname used to access the Jdbc driver"/>
+              <member name="connectionStringTemplate" type="string" attr:desc="the template used to build the connection parameter"/>
+          </members>
+      </gstruct-->
+
+      <gstruct name="db.mgmt.PythonDBAPIDriver" parent="db.mgmt.Driver" attr:desc="information about a Python DB 2.0 API compliant driver">
+          <members>
+              <member name="connectionStringTemplate" type="string" attr:desc="the template used to build the connection parameter"/>
+          </members>
+      </gstruct>
+
+      <gstruct name="db.mgmt.DriverParameter" parent="GrtObject" attr:desc="a list of all parameters the Jdbc driver supports">
+          <members>
+              <member name="caption" type="string" attr:desc="the caption displayed in the connection dialog"/>
+              <member name="accessibilityName" type="string" attr:desc="accessibility name"/>
+              <member name="description" type="string" attr:desc="the description displayed in the connection dialog"/>
+
+              <member name="paramType" type="string" attr:desc="can be string, int, boolean, tristate, file, dir"/>
+              <member content-type="string" name="paramTypeDetails" type="dict" attr:desc="additional information e.g. like file extension"/>
+
+              <member name="required" type="int" attr:desc="if set to 1 this parameter is a required parameter"/>
+              <member name="defaultValue" type="string" attr:desc="the default value of the parameter"/>
+              <member name="lookupValueModule" type="string" attr:desc="the module that contains the method to call to get the list of possible values"/>
+              <member name="lookupValueMethod" type="string" attr:desc="the method to call to get the list of possible values"/>
+
+              <member name="layoutAdvanced" type="int" attr:desc="when set to 1 this is paramter is only displayed in the advanced parameter section"/>
+              <member name="layoutRow" type="int" attr:desc="the row the parameter is displayed. There can be more than one parameters on the same row. When set to -1 the parameter is appended at the end of the parameter list"/>
+              <member name="layoutWidth" type="int" attr:desc="the width of the edit"/>
+          </members>
+      </gstruct>
+
+      <gstruct name="db.mgmt.Connection" parent="GrtObject" attr:desc="a stored RDBMS connection">
+          <members>
+              <member name="driver" type="object" struct-name="db.mgmt.Driver" attr:desc="the driver used to connect"/>
+              <member name="parameterValues" type="dict" content-type="string" attr:desc="the parameters the user entered"/>
+              <member name="modules" type="dict" content-type="string" attr:desc="the modules used for this connection"/>
+              <member name="hostIdentifier" type="string" attr:desc="identifier to be used for storing password" />
+              <member name="isDefault" type="int"/>
+          </members>
+      </gstruct>
+      
+      <gstruct name="db.mgmt.SSHConnection" parent="GrtObject" impl-data="1" attr:desc="a proxy to and instance that provide access to remote server. This object cannot be instantiated directly.">
+          <members>
+              <method name="isConnected" attr:desc="check if connection is active">
+                <return type="int" />
+              </method>
+              <method name="executeCommand" attr:desc="execute command on the remote server">
+                  <argument name="text" type="string" attr:desc="the command to be executed on the server"/>
+                  <return type="dict" attr:desc="command output"/>
+              </method>
+              <method name="executeSudoCommand" attr:desc="execute command on the remote server using sudo">
+                  <argument name="command" type="string" attr:desc="the command to be executed on the server"/>
+                  <argument name="user" type="string" attr:desc="the user which should execute the command"/>
+                  <return type="dict" attr:desc="command output"/>
+              </method>
+              <method name="connect"  attr:desc="make connection to remote server">
+                  <return type="int"/>
+              </method>
+              
+              <method name="cd" attr:desc="change current working directory">
+                <argument name="directory" type="string" attr:desc="new location" />
+                <return type="int" attr:desc="indicator whenever change was successfull"/>
+              </method>
+              
+              <method name="pwd" attr:desc="get current working directory">
+                <return type="string" attr:desc="current working directory"/>
+              </method>
+              
+              <method name="mkdir" attr:desc="create new directory on remote host">
+                <argument name="directory" type="string" attr:desc="new directory name or absolute path to the new directory" />
+                <return type="void" />
+              </method>
+              
+              <method name="rmdir" attr:desc="remove remote directory">
+                <argument name="directory" type="string" attr:desc="directory name or absolute path to the directory" />
+                <return type="void" />
+              </method>
+              
+              <method name="unlink" attr:desc="remove remote file">
+                <argument name="file" type="string" attr:desc="filename or absolute path to the file" />
+                <return type="void" />
+              </method>
+              
+              <method name="get" attr:desc="download remote file">
+                <argument name="src" type="string" attr:desc="remote file path" />
+                <argument name="dest" type="string" attr:desc="local file path" />
+                <return type="void" />
+              </method>
+              
+              <method name="getContent" attr:desc="fetch remote file into variable">
+                <argument name="src" type="string" attr:desc="remote file path" />
+                <return type="string" attr:desc="remote file content"/>
+              </method>
+              
+              <method name="setContent" attr:desc="create remote file with content">
+                <argument name="path" type="string" attr:desc="remote file path"/>
+                <argument name="content" type="string" attr:desc="remote file content"/>
+                <return type="void" />
+              </method>
+              
+              <method name="put" attr:desc="upload file to remote location">
+                <argument name="src" type="string" attr:desc="local file path" />
+                <argument name="dest" type="string" attr:desc="remote file path" />
+                <return type="void" />
+              </method>
+              
+              <method name="stat" attr:desc="get remote path details">
+                <argument name="path" type="string" attr:desc="path to remote directory or file" />
+                <return type="dict" attr:desc="Dict object with file attributes" />
+              </method>
+
+              <method name="fileExists" attr:desc="check if given filename exists">
+                <argument name="path" type="string" attr:desc="path to remote file" />
+                <return type="int" attr:desc="indicator whenever file exists"/>
+              </method>
+
+              
+              <method name="ls" attr:desc="list remote directory contents">
+                <argument name="path" type="string" attr:desc="remote location" />
+                <return type="list" content-type="dict"/>
+              </method>
+              
+              <method name="open" attr:desc="open remote file">
+                <argument name="path" type="string" attr:desc="remote file location" />
+                <return type="object" struct-name="db.mgmt.SSHFile" />
+              </method>
+              
+              <method name="disconnect" attr:desc="disconnect ssh connection">
+                <return type="void" />
+              </method>
+          </members>
+      </gstruct>
+      
+      <gstruct name="db.mgmt.SSHFile" parent="GrtObject" impl-data="1" attr:desc="a proxy to and instance that provide access to remote file. This object cannot be instantiated directly.">
+        <members>
+          <method name="tell" attr:desc="return the file's current position.">
+            <return type="int" />
+          </method>
+          <method name="seek" attr:desc="reposition the file's current position.">
+            <argument name="offset" type="int" />
+            <return type="int" />
+          </method>
+          <method name="read" attr:desc="read up to length bytes from this file.">
+            <argument name="length" type="int" />
+            <return type="string" />
+          </method>
+          <method name="readline" attr:desc="read from file until line termination is found '\n'">
+            <return type="string" />
+          </method>
+          <method name="getPath" attr:desc="get path for the file">
+            <return type="string" />
+          </method>
+        </members>
+      </gstruct>
+
+      <gstruct name="db.mgmt.ServerInstance" parent="GrtObject" attr:desc="DB server connection and management information">
+          <members>
+              <member name="connection" type="object" struct-name="db.mgmt.Connection"/>
+              <member name="loginInfo" type="dict" attr:desc="login information to the server"/>
+              <member name="serverInfo" type="dict" attr:desc="server configuration information"/>
+          </members>
+      </gstruct>
+
+      <gstruct name="db.mgmt.SyncProfile" parent="GrtObject" attr:desc="DB synchronization profile containing a list last known names for each model object in a equivalent schema in the server">
+          <members>
+              <member name="targetHostIdentifier" type="string" attr:desc="identifier for the target DB server"/>
+              <member name="targetSchemaName" type="string" attr:desc="name of the target schema in the DB server"/>
+              <member name="lastKnownDBNames" type="dict" attr:desc="dictionary of object-id to object name values that were last seen in the target DB"/>
+              <member name="lastKnownViewDefinitions" type="dict" attr:desc="dictionary of view object-id to the checksums of the view definitions in both model and server (object-id:model, object-id:server). The canonical location for these values in the object is in oldServerSqlDefinition and oldModelSqlDefinition."/>
+              <member name="lastSyncDate" type="string" attr:desc="last date/time that the model was synchronized to this target"/>
+          </members>
+      </gstruct>
+  </gstructs>
+

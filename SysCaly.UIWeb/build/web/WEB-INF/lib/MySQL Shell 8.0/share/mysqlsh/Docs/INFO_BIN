@@ -1,0 +1,22 @@
+===== Information about the build process: =====
+Build was run at Fri 07/22/2022 on host ''
+
+Build was done on  Windows-10.0.20348 using AMD64
+Build was done using cmake 3.15.3
+
+===== Compiler / generator used: =====
+Visual Studio 16 2019
+
+===== Feature flags used: =====
+File 'CMakeCache.txt' is not yet found.
+
+===== Compiler flags used: =====
+Compiler: MSVC 19.29.30143.0
+COMPILE_DEFINITIONS: 
+CMAKE_C_FLAGS: /DWIN32 /D_WINDOWS /W3
+CMAKE_CXX_FLAGS: /DWIN32 /D_WINDOWS /W3 /GR /EHsc /std:c++17 /TP
+CMAKE_C_FLAGS_DEBUG: /MDd /Zi /Ob0 /Od /RTC1
+CMAKE_CXX_FLAGS_DEBUG: /MDd /Zi /Ob0 /Od /RTC1 /std:c++17
+CMAKE_C_FLAGS_RELWITHDEBINFO: /MD /Zi /O2 /Ob1 /DNDEBUG -DNDEBUG 
+CMAKE_CXX_FLAGS_RELWITHDEBINFO: /MD /Zi /O2 /Ob1 /DNDEBUG /std:c++17 -DNDEBUG 
+===== EOF =====
