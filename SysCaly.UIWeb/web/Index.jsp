@@ -112,6 +112,7 @@
                     <div
                       id="Chat-Number-Teachers"
                       class="bg-yellow-300 rounded-xl"
+                      action="SysCaly/UIWeb/controllers/MatterServlet"
                     >
                       -
                     </div>
